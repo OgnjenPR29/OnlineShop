@@ -8,6 +8,8 @@ using ServiceLayer.Services;
 using Microsoft.AspNetCore.Authorization;
 using ServiceLayer;
 using Microsoft.AspNetCore.Http;
+using DataLayer.Models;
+using ServiceLayer.DataBase.Salesman;
 
 namespace OnlineShop.Controllers
 {
@@ -36,6 +38,47 @@ namespace OnlineShop.Controllers
 				}
 
 				return Ok(operationResult.Dto);
+			}
+			catch (Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+		[HttpGet("orders")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetORders()
+        {
+			try
+			{
+				IServiceOperationResult operationResult = _adminService.AllOrders();
+
+				if (!operationResult.IsSuccessful)
+				{
+					return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+				}
+
+				return Ok(operationResult.Dto);
+			}
+			catch (Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		[HttpPut("seller-approval-status")]
+		[Authorize(Roles = "Admin")]
+		public IActionResult UpdateSellersApprovalStatus(ApprovalStatusDto sellerApprovalStatusDto)
+		{
+			try
+			{
+				IServiceOperationResult operationResult = _adminService.ChangeSalesmanStatus(sellerApprovalStatusDto);
+
+				if (!operationResult.IsSuccessful)
+				{
+					return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+				}
+
+				return Ok();
 			}
 			catch (Exception)
 			{

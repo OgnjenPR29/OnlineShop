@@ -8,5 +8,6 @@ namespace ServiceLayer.Services.ServiceInterfaces
 {
     public interface IAdminService
     {
+        public IServiceOperationResult AllSalesmans();
     }
 }

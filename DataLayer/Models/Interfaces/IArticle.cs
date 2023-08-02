@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models.Interfaces
 {
-    interface IArticle
+    public interface IArticle
     {
 		long Id { get; set; }
 
@@ -23,6 +23,8 @@ namespace DataLayer.Models.Interfaces
 		long SalesmanId { get; set; }
 
 		Salesman Salesman { get; set; }
+		ICollection<Item> Items { get; set; }
+
 
 	}
 }

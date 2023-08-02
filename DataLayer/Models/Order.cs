@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    class Order : IOrder
+    public class Order : IOrder
     {
 		public long Id { get; set; }
 
@@ -21,9 +21,9 @@ namespace DataLayer.Models
 
 		public string Address { get; set; }
 
-		public long? CustomerId { get; set; }
+		public long? ShopperId { get; set; }
 
-		public Customer Customer { get; set; }
-
-	}
+		public Shopper Shopper { get; set; }
+        public ICollection<Item> Items { get; set; }
+    }
 }

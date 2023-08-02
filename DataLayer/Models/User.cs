@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    class User : IUser
+    public class User : IUser
     {
 		
 			public long Id { get; set; }

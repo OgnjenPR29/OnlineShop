@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    class Admin : IAdmin
+    public class Admin : User, IAdmin
     {
     }
 }

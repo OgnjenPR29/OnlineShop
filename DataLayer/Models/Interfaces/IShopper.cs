@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models.Interfaces
 {
-    interface IShopper : IUser
+    public interface IShopper : IUser
     {
         ICollection<Order> Orders { get; set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models.Interfaces
 {
-    interface IAdmin : IUser
+    public interface IAdmin : IUser
     {
     }
 }

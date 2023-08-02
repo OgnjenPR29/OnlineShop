@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    class Salesman : User, ISalesman
+    public class Salesman : User, ISalesman
     {
 		public ICollection<Article> Articles { get; set; }
-        
+        public Status ApprovalStatus { get ; set ; }
     }
 }

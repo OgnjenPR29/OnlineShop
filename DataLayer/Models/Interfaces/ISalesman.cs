@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models.Interfaces
 {
-    interface ISalesman : IUser
+    public interface ISalesman : IUser
     {
         ICollection<Article> Articles { get; set; }
+
+        Status ApprovalStatus { get; set; }
+
 
     }
 }

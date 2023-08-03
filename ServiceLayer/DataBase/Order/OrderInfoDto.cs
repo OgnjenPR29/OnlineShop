@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceLayer.DataBase.Item;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,6 @@ namespace ServiceLayer.DataBase.ArticleDto
 
 		public string RemainingTime { get; set; }
 
-		public ICollection<ItemInfoDto> Items { get; set; }
+		public ICollection<ItemDto> Items { get; set; }
 	}
 }

@@ -50,12 +50,12 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			/*if (((Salesman)seller).ApprovalStatus != SellerApprovalStatus.Approved)
+			if (((Salesman)seller).ApprovalStatus != Status.APPROVED)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
 
 				return operationResult;
-			}*/
+			}
 
 			if (workingRepo.ArticleRepository.FindFirst(x => x.SalesmanId == seller.Id && x.Name == articleDto.Name) != null)
 			{
@@ -89,12 +89,12 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			/*if (((Salesman)seller).ApprovalStatus != Status.Approved)
+			if (((Salesman)seller).ApprovalStatus != Status.APPROVED)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
 
 				return operationResult;
-			}*/
+			}
 
 			IArticle article = workingRepo.ArticleRepository.FindFirst(x => x.Name == articleName && x.SalesmanId == seller.Id);
 			if (article == null)
@@ -127,12 +127,12 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			/*if (((Seller)seller).ApprovalStatus != SellerApprovalStatus.Approved)
+			if (((Salesman)salesman).ApprovalStatus != Status.APPROVED)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
 
 				return operationResult;
-			}*/
+			}
 
 			List<IArticle> articles = workingRepo.ArticleRepository.GetAllArticlesFromSeller(salesman.Id).ToList<IArticle>();
 
@@ -164,12 +164,12 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			/*if (((Salesman)seller).ApprovalStatus != SellerApprovalStatus.Approved)
+			if (((Salesman)seller).ApprovalStatus != Status.APPROVED)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
 
 				return operationResult;
-			}*/
+			}
 
 			IArticle article = workingRepo.ArticleRepository.FindFirst(x => x.SalesmanId == seller.Id && x.Name == articleDto.CurrentName);
 			if (article == null)
@@ -229,12 +229,12 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			/*if (((Seller)seller).ApprovalStatus != SellerApprovalStatus.Approved)
+			if (((Salesman)salesman).ApprovalStatus != Status.APPROVED)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
 
 				return operationResult;
-			}*/
+			}
 
 			IArticle article = workingRepo.ArticleRepository.FindFirst(article => article.Name == articleName && article.SalesmanId == salesman.Id);
 

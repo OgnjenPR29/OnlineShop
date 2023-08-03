@@ -4,6 +4,7 @@ using DataLayer.Models;
 using DataLayer.Models.Interfaces;
 using ServiceLayer.DataBase;
 using ServiceLayer.DataBase.ArticleDto;
+using ServiceLayer.DataBase.Item;
 using ServiceLayer.DataBase.Salesman;
 using ServiceLayer.Helpers;
 using ServiceLayer.Services.ServiceInterfaces;
@@ -55,11 +56,38 @@ namespace ServiceLayer.Services
 
             OrderListDto dto = new OrderListDto() { Orders = temp };
 
+            foreach (var orderDto in dto.Orders)
+            {
+                IOrder relatedOrder = orders.Find(x => x.Id == orderDto.Id);
+                orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, relatedOrder.DeliveryInSeconds);
+            }
+
             operationResult = new ServiceOperationResult(true, dto);
 
             return operationResult;
 
 
+        }
+        public string CalculateDeliveryRemainingTime(DateTime placedTime, int deliveryTimeInSeconds)
+        {
+            int secondsPassed = (int)(GetDateTimeAsCEST(DateTime.Now) - placedTime).TotalSeconds;
+            int secondsLeft = deliveryTimeInSeconds - secondsPassed;
+
+            if (secondsLeft < 0)
+            {
+                secondsLeft = 0;
+            }
+
+            TimeSpan timeSpan = TimeSpan.FromSeconds(secondsLeft);
+            string formattedTime = timeSpan.ToString(@"hh\:mm\:ss");
+
+            return formattedTime;
+        }
+        public DateTime GetDateTimeAsCEST(DateTime now)
+        {
+            var cest = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
+
+            return cest;
         }
 
         public IServiceOperationResult ChangeSalesmanStatus(ApprovalStatusDto status)
@@ -84,6 +112,38 @@ namespace ServiceLayer.Services
 
             return operationResult;
 
+        }
+
+        public IServiceOperationResult GetOrderDetails(long id)
+        {
+            IServiceOperationResult operationResult;
+
+            IOrder order = workingRepo.OrderRepository.GetById(id);
+
+            if (order == null)
+            {
+                operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound,
+                    $"Order with the id \"{id}\" has not been found!");
+
+                return operationResult;
+            }
+
+            OrderInfoDto orderDto = _mapper.Map<OrderInfoDto>(order);
+            orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, order.DeliveryInSeconds);
+
+            List<IItem> items = workingRepo.ItemRepository.FindAllIncludeArticles((item) => item.OrderId == id).ToList<IItem>();
+            orderDto.Items = _mapper.Map<List<ItemDto>>(items);
+
+            /*foreach (var orderItem in orderDto.Items)
+            {
+                IArticle article = items.Find(item => item.ArticleId == orderItem.ArticleId).Article;
+                byte[] image = sellerHelper.GetArticleProductImage(article);
+                orderItem.ArticleImage = image;
+            }*/
+
+            operationResult = new ServiceOperationResult(true, orderDto);
+
+            return operationResult;
         }
 
 

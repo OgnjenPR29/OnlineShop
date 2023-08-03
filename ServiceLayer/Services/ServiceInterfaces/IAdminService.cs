@@ -12,6 +12,8 @@ namespace ServiceLayer.Services.ServiceInterfaces
     {
         public IServiceOperationResult AllSalesmans();
         public IServiceOperationResult AllOrders();
+
+        public IServiceOperationResult GetOrderDetails(long id);
         public IServiceOperationResult ChangeSalesmanStatus(ApprovalStatusDto status);
     }
 }

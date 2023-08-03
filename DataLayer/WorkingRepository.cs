@@ -20,6 +20,7 @@ namespace DataLayer
 			ShopperRepository = new ShopperRepo(context);
 			ArticleRepository = new ArticleRepo(context);
 			OrderRepository = new OrderRepo(context);
+			ItemRepository = new ItemRepo(context);
 
 		}
 
@@ -28,6 +29,7 @@ namespace DataLayer
 		public IAdminRepo AdminRepository { get; set; }
 		public IShopperRepo ShopperRepository { get; set; }
 		public IArticleRepo ArticleRepository { get; set; }
+		public IItemRepo ItemRepository { get; set; }
 
 		public void Commit()
 		{

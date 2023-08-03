@@ -85,5 +85,25 @@ namespace OnlineShop.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
+		[HttpGet("order")]
+		[Authorize(Roles = "Admin")]
+		public IActionResult GetOrderDetails([FromQuery] long id)
+		{
+			try
+			{
+				IServiceOperationResult operationResult = _adminService.GetOrderDetails(id);
+
+				if (!operationResult.IsSuccessful)
+				{
+					return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+				}
+
+				return Ok(operationResult.Dto);
+			}
+			catch (Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
 	}
 }

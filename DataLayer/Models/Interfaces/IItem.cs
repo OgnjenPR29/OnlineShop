@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models.Interfaces
 {
-    interface IItem
+    public interface IItem
     {
 		long Id { get; set; }
 

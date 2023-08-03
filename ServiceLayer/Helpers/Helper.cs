@@ -21,6 +21,8 @@ namespace ServiceLayer.Helpers
 
 		string _key;
 
+		private readonly string ArticleImageRelativePath = "../ArticleImages";
+
 		readonly int sslPort = 44301;
 
 		public Helper(IWorkingRepository workingRepository, IConfiguration configuration) {
@@ -211,7 +213,7 @@ namespace ServiceLayer.Helpers
 			return articleDtoList;
 		}
 
-		public byte[] GetArticleProductImage(IArticle article)
+		public byte[] GetArticleProductImage(IArticle article)	
 		{
 			string productImageName = article.Image;
 			if (productImageName == null)

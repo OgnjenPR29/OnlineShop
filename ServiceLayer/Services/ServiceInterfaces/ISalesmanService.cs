@@ -17,6 +17,9 @@ namespace ServiceLayer.Services.ServiceInterfaces
         IServiceOperationResult GetArticleInfo(string articleName, JwtDto jwtDto);
         IServiceOperationResult GetPreviousOrders(JwtDto jwtDto);
         IServiceOperationResult GetNewOrders(JwtDto jwtDto);
+        IServiceOperationResult GetOrderInfo(JwtDto jwtDto, long id);
+        
 
+
+        }
     }
-}

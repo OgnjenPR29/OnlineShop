@@ -4,6 +4,7 @@ using DataLayer.Models;
 using DataLayer.Models.Interfaces;
 using ServiceLayer.DataBase.ArticleDto;
 using ServiceLayer.DataBase.Auth;
+using ServiceLayer.DataBase.Item;
 using ServiceLayer.Helpers;
 using ServiceLayer.Services.ServiceInterfaces;
 using System;
@@ -364,7 +365,37 @@ namespace ServiceLayer.Services
 			
 		}
 
+		public IServiceOperationResult GetOrderInfo(JwtDto jwtDto, long id) {
 
+			IServiceOperationResult operationResult;
+
+			ISalesman salesman = (Salesman)_helper.FindUserByJwt(jwtDto.Token);
+
+			if (salesman == null) { 
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Prodavac ne postoji!");
+				return operationResult;
+			}
+
+			IOrder order = workingRepo.OrderRepository.GetById(id);
+
+			if (order == null) { 
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Porudzbina ne postoji!");
+				return operationResult;
+
+			}
+
+			OrderInfoDto orderDto = _mapper.Map<OrderInfoDto>(order);
+			orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, order.DeliveryInSeconds);
+
+			List<IItem> items = workingRepo.ItemRepository.FindAllIncludeArticles((item) => item.OrderId == id).ToList<IItem>();
+			items.RemoveAll(item => item.Article.SalesmanId != salesman.Id);
+			orderDto.Items = _mapper.Map<List<ItemDto>>(items);
+
+			operationResult = new ServiceOperationResult(true, orderDto);
+
+			return operationResult;
+
+		}
 
 
 	}

@@ -233,5 +233,80 @@ namespace ServiceLayer.Helpers
 			return image;
 		}
 
+		public List<IOrder> GetPendingOrders(List<IOrder> orders)
+		{
+			List<IOrder> pendingOrders = new List<IOrder>();
+
+			foreach (var order in orders)
+			{
+				if (IsOrderPending(order))
+				{
+					pendingOrders.Add(order);
+				}
+			}
+
+			return pendingOrders;
+		}
+
+		public bool IsOrderPending(IOrder order)
+		{
+			int secondsPassed = (int)(GetDateTimeAsCEST(DateTime.Now) - order.Created).TotalSeconds;
+			if (order.DeliveryInSeconds > secondsPassed)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public DateTime GetDateTimeAsCEST(DateTime now)
+		{
+			var cest = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
+
+			return cest;
+		}
+
+
+		public List<IOrder> GetFinishedOrders(List<IOrder> orders)
+		{
+			List<IOrder> finishedOrders = new List<IOrder>();
+
+			foreach (var order in orders)
+			{
+				if (!IsOrderPending(order))
+				{
+					finishedOrders.Add(order);
+				}
+			}
+
+			return finishedOrders;
+		}
+		public void UpdateBasicUserData(IUser currentUser, IUser newUser)
+		{
+			if (!string.IsNullOrWhiteSpace(newUser.Address))
+			{
+				currentUser.Address = newUser.Address;
+			}
+
+			if (!string.IsNullOrWhiteSpace(newUser.Firstname))
+			{
+				currentUser.Firstname = newUser.Firstname;
+			}
+
+			if (!string.IsNullOrWhiteSpace(newUser.Lastname))
+			{
+				currentUser.Lastname = newUser.Lastname;
+			}
+
+			if (!string.IsNullOrWhiteSpace(newUser.Username))
+			{
+				currentUser.Username = newUser.Username;
+			}
+
+			if (newUser.DateOfBirth != System.DateTime.MinValue)
+			{
+				currentUser.DateOfBirth = newUser.DateOfBirth;
+			}
+		}
 	}
 }

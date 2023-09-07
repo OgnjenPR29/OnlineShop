@@ -97,7 +97,7 @@ namespace OnlineShop.Controllers
             }
         }
 
-        [HttpPost("article")]
+        [HttpDelete("article")]
         [Authorize(Roles = "Salesman")]
         public IActionResult DeleteArticle([FromQuery] string name)
         {
@@ -121,7 +121,7 @@ namespace OnlineShop.Controllers
             }
         }
 
-        [HttpPost("article")]
+        [HttpGet("article")]
         [Authorize(Roles = "Salesman")]
         public IActionResult GetArticleInfo([FromQuery]string name)
         {
@@ -148,7 +148,7 @@ namespace OnlineShop.Controllers
 
 
         [HttpGet("previous-orders")]
-        [Authorize(Roles = "Seller")]
+        [Authorize(Roles = "Salesman")]
         public IActionResult PreviousOrders()
         {
             try
@@ -172,7 +172,7 @@ namespace OnlineShop.Controllers
         }
 
         [HttpGet("new-orders")]
-        [Authorize(Roles = "Seller")]
+        [Authorize(Roles = "Salesman")]
         public IActionResult NewOrders()
         {
             try
@@ -181,6 +181,30 @@ namespace OnlineShop.Controllers
                 JwtDto jwtDto = new JwtDto(token);
 
                 IServiceOperationResult operationResult = salesmanService.GetNewOrders(jwtDto);
+
+                if (!operationResult.IsSuccessful)
+                {
+                    return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+                }
+
+                return Ok(operationResult.Dto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("order")]
+        [Authorize(Roles = "Salesman")]
+        public IActionResult GetOrderInfo([FromQuery] long id)
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
+                JwtDto jwtDto = new JwtDto(token);
+
+                IServiceOperationResult operationResult = salesmanService.GetOrderInfo(jwtDto, id);
 
                 if (!operationResult.IsSuccessful)
                 {

@@ -10,7 +10,9 @@ namespace DataLayer.Repo.Interfaces
 {
     public interface IOrderRepo : IGeneric<Order>
     {
-        public IEnumerable<Order> ItemsAndArticles(Expression<Func<Order, bool>> expression)
+        public IEnumerable<Order> ItemsAndArticles(Expression<Func<Order, bool>> expression);
+        public IEnumerable<Order> FindAllIncludeItems(Expression<Func<Order, bool>> expression);
+        public Order FindFirstIncludeItems(Expression<Func<Order, bool>> expression);
 
     }
 }

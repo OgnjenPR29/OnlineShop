@@ -29,6 +29,12 @@ namespace ServiceLayer.Helpers
 
         public IUser FindUserByJwt(string token);
         public List<ArticleDetailDto> ReturnArticlesDetail(List<IArticle> articles);
+        public void UpdateBasicUserData(IUser currentUser, IUser newUser);
+        public bool IsOrderPending(IOrder order);
+        public List<IOrder> GetFinishedOrders(List<IOrder> orders);
+        public List<IOrder> GetPendingOrders(List<IOrder> orders);
+
+
 
     }
 }

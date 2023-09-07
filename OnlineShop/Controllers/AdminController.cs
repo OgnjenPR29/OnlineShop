@@ -46,7 +46,7 @@ namespace OnlineShop.Controllers
 		}
 		[HttpGet("orders")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetORders()
+        public IActionResult GetOrders()
         {
 			try
 			{

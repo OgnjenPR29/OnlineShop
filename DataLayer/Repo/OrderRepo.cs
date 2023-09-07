@@ -18,6 +18,26 @@ namespace DataLayer.Repo
         {
         }
 
+
+        public Order FindFirstIncludeItems(Expression<Func<Order, bool>> expression)
+        {
+            lock (dataBaseLockControl)
+            {
+                var result = _context.Set<Order>().Include(order => order.Items).FirstOrDefault(expression);
+
+                return result;
+            }
+        }
+        public IEnumerable<Order> FindAllIncludeItems(Expression<Func<Order, bool>> expression)
+        {
+            lock (dataBaseLockControl)
+            {
+                var result = _context.Set<Order>().Include(order => order.Items).Where(expression).ToList();
+
+                return result;
+            }
+        }
+
         public IEnumerable<Order> ItemsAndArticles(Expression<Func<Order, bool>> expression)
         {
             lock (dataBaseLockControl)

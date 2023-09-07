@@ -8,5 +8,6 @@ namespace ServiceLayer.Services.ServiceInterfaces
 {
     public interface IShopperService
     {
+        public IServiceOperationResult GetAllArticles();
     }
 }

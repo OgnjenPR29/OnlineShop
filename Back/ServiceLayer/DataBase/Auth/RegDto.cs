@@ -1,13 +1,13 @@
-﻿using DataLayer.Models;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.DataBase
+namespace ServiceLayer.DataBase.Auth
 {
-    public class SalesmanDto : IDTO
+    public class RegDto : IDTO
     {
 		public string Firstname { get; set; }
 
@@ -21,10 +21,10 @@ namespace ServiceLayer.DataBase
 
 		public string Address { get; set; }
 
-		public byte[] SellerProfileImage { get; set; }
+		public string Role { get; set; }
 
-		public DateTime Birthdate { get; set; }
+		public IFormFile ProfileImage { get; set; }
 
-		public Status ApprovalStatus { get; set; }
+		public DateTime DateOfBirth { get; set; }
 	}
 }

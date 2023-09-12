@@ -16,7 +16,7 @@ namespace ServiceLayer.DataBase.User
 
 		public string Address { get; set; }
 
-		public DateTime Birthdate { get; set; }
+		public DateTime DateOfBirth { get; set; }
 
 		public string Email { get; set; }
 	}

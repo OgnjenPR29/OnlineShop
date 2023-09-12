@@ -42,7 +42,7 @@ namespace OnlineShop.Controllers
 		}
 
 		[HttpPost("register")]
-		public IActionResult RegisterUser([FromBody] RegDto regDto)
+		public IActionResult RegisterUser([FromForm] RegDto regDto)
 		{
 			try
 			{

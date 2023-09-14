@@ -3,6 +3,9 @@ import { useContext, useEffect } from 'react';
 import UserContext from './context/UserContext';
 import Navbar from './components/Navbar';
 
+import AllSalesmans from './page/Admin/AllSalesmans';
+import AllOrders from './page/Admin/AllOrders';
+
 import { Box } from '@mui/material';
 
 import Home from './page/Home';
@@ -19,7 +22,7 @@ function App() {
   
   const role = isLoggedin && userContext.role.toLowerCase();
   
-  const approvedSeller =
+  const approvedSalesman =
     role === 'salesman' && userContext.status?.toLowerCase() === 'approved';
 
   useEffect(() => {
@@ -38,6 +41,8 @@ function App() {
         {!isLoggedin && <Route path='/register' element={<Register />} />}
         {isLoggedin && <Route path='/register' element={<Home />} />}
         {isLoggedin && <Route path='/profile' element={<Profile />} />}
+        {role === 'admin' && (<Route path='/salesmans' element={<AllSalesmans />} />)}
+        {role === 'admin' && <Route path='/orders' element={<AllOrders />} />}
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Box>

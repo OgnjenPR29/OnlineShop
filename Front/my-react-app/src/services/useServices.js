@@ -12,29 +12,29 @@ const getProfileImageUrl =
   baseUrl + process.env.REACT_APP_API_GET_PROFILE_IMAGE_URL;
 const changeProfileImageUrl =
   baseUrl + process.env.REACT_APP_API_CHANGE_PROFILE_IMAGE_URL;
-const getAllSellersUrl =
-  baseUrl + process.env.REACT_APP_API_ADMIN_ALL_SELLERS_URL;
-const updateSellerStatusUrl =
+const getAllSalesmansUrl =
+  baseUrl + process.env.REACT_APP_API_ADMIN_ALL_SALESMANS_URL;
+const updateSalesmanStatusUrl =
   baseUrl + process.env.REACT_APP_API_UPDATE_APPROVAL_STATUS_URL;
 const allOrdersUrl = baseUrl + process.env.REACT_APP_API_ALL_ORDERS_URL;
 const getSellersFinishedOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_FINISHED_ORDERS_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_FINISHED_ORDERS_URL;
 const getSellersPendingOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_PENDING_ORDERS_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_PENDING_ORDERS_URL;
 const getSellersOrderDetailsUrl =
   baseUrl + process.env.REACT_APP_API_ORDER_DETAILS_URL;
 const getSellerArticleDetailsUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_GET_ARTICLE_DETAILS_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_GET_ARTICLE_DETAILS_URL;
 const getSellerArticlesUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_ARTICLES_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_ARTICLES_URL;
 const updateArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_UPDATE_ARTICLE_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_URL;
 const updateArticleProductImageUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_UPDATE_ARTICLE_IMAGE_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_IMAGE_URL;
 const deleteArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_DELETE_ARTICLE_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_DELETE_ARTICLE_URL;
 const postArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SELLER_POST_ARTICLE_URL;
+  baseUrl + process.env.REACT_APP_API_SALESMAN_POST_ARTICLE_URL;
 const customerFinishedOrdersUrl =
   baseUrl + process.env.REACT_APP_API_CUSTOMER_FINISHED_ORDERS_URL;
 const customerPendingOrdersUrl =
@@ -106,6 +106,29 @@ const useServices = () => {
       [putRequestFormData]
     );
 
+    const getAllSalesmansRequest = useCallback(() => {
+      getRequest(getAllSalesmansUrl);
+    }, [getRequest]);
+
+    const updateSalesmanStatusRequest = useCallback(
+      (data) => {
+        putRequest(updateSalesmanStatusUrl, data);
+      },
+      [putRequest]
+    );
+
+    const getAllOrdersRequest = useCallback(() => {
+      getRequest(allOrdersUrl);
+    }, [getRequest]);
+
+    const getAdminOrderDetailsRequest = useCallback(
+      (id) => {
+        getRequest(baseUrl + '/admin/order' + '?id=' + id);
+      },
+      [getRequest]
+    );
+
+    
       return {
         data,
         isLoading,
@@ -118,7 +141,11 @@ const useServices = () => {
         updateUserRequest,
         changePasswordRequest,
         getProfileImageRequest,
-        updateProfileImageRequest
+        updateProfileImageRequest,
+        getAllSalesmansRequest,
+        updateSalesmanStatusRequest,
+        getAllOrdersRequest,
+        getAdminOrderDetailsRequest
       };
 
     };

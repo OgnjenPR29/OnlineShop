@@ -17,7 +17,7 @@ namespace OnlineShop.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         readonly IUserService _userService;
 
@@ -30,9 +30,11 @@ namespace OnlineShop.Controllers
         [Authorize]
         public IActionResult GetUser()
         {
+
             try
             {
                 string token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
+
                 JwtDto jwtDto = new JwtDto(token);
 
                 IServiceOperationResult operationResult = _userService.GetUser(jwtDto);
@@ -46,6 +48,8 @@ namespace OnlineShop.Controllers
             }
             catch (Exception)
             {
+                Console.WriteLine("neki teksttttttttttttttt");
+
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

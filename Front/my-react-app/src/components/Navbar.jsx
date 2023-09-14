@@ -19,8 +19,8 @@ const Navbar = () => {
 
   const isLoggedin = userContext.isLoggedin;
   const role = isLoggedin && userContext.role.toLowerCase();
-  const approvedSeller =
-    role === 'seller' && userContext.status?.toLowerCase() === 'approved';
+  const approvedSalesman =
+    role === 'salesman' && userContext.status?.toLowerCase() === 'approved';
 
   return (
     <Box>
@@ -33,7 +33,7 @@ const Navbar = () => {
               </IconButton>
             </Link>
           </Box>
-          {(approvedSeller || role === 'customer') && (
+          {(approvedSalesman || role === 'shopper') && (
             <Link
               underline={
                 location.pathname.includes('pending-orders')
@@ -53,7 +53,7 @@ const Navbar = () => {
               Pending orders
             </Link>
           )}
-          {(approvedSeller || role === 'customer') && (
+          {(approvedSalesman || role === 'shopper') && (
             <Link
               underline={
                 location.pathname.includes('finished-orders')
@@ -73,7 +73,7 @@ const Navbar = () => {
               Finished orders
             </Link>
           )}
-          {(approvedSeller || role === 'customer') && (
+          {(approvedSalesman || role === 'shopper') && (
             <Link
               underline={
                 location.pathname.includes('articles') ? 'always' : 'hover'
@@ -91,7 +91,7 @@ const Navbar = () => {
               Articles
             </Link>
           )}
-          {approvedSeller && (
+          {approvedSalesman && (
             <Link
               underline={
                 location.pathname.includes('new-article') ? 'always' : 'hover'
@@ -112,10 +112,10 @@ const Navbar = () => {
           {role === 'admin' && (
             <Link
               underline={
-                location.pathname.includes('all-sellers') ? 'always' : 'hover'
+                location.pathname.includes('salesmans') ? 'always' : 'hover'
               }
               component={RouterLink}
-              to='/all-sellers'
+              to='/salesmans'
               sx={{
                 fontSize: '22px',
                 marginRight: 1,
@@ -124,7 +124,7 @@ const Navbar = () => {
                 textDecorationColor: underlineColor,
               }}
             >
-              All sellers
+              All salesmans
             </Link>
           )}
           {role === 'admin' && (

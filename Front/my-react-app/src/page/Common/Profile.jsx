@@ -90,6 +90,8 @@ const Profile = () => {
     getUserProfileRequest();
   }, [getUserProfileRequest]);
 
+  const [startdate, setStartDate] = useState(new Date());
+
   useEffect(() => {
 
     if (isLoading) {
@@ -97,6 +99,7 @@ const Profile = () => {
     }
 
     if ((statusCode === 200 || statusCode === 204) && !error && data && fetchingProfile) {
+      console.log('sad smo ovde')
       setFetchingProfile(false);
       setBasicUserInfo(data);
       clearRequest();
@@ -119,6 +122,11 @@ const Profile = () => {
     } else if ((statusCode === 200 || statusCode === 204)  && !error && changingPassword) {
       setChangingPassword(false);
       handleSuccess('Successfully changed password!');
+      clearRequest();
+    }
+    else if (statusCode === 401 && changingPassword) {
+      setChangingPassword(false);
+      alert('Old password not correct!');
       clearRequest();
     } else if ((statusCode === 200 || statusCode === 204)  && !error && updatingProfileImage) {
       setUpdatingProfileImage(false);
@@ -221,6 +229,7 @@ const Profile = () => {
                   variant='h5'
                   color='secondary'
                   paddingBottom='15px'
+                  marginLeft={10}
                 >
                   (Not approved!)
                 </Typography>
@@ -247,7 +256,7 @@ const Profile = () => {
               }}
               required
             />
-            <FormControl sx={{ width: '50%', margin: '0px' }}>
+            <FormControl sx={{ width: '80%', margin: '0px' }}>
               <TextField
                 placeholder='Email'
                 id='email'
@@ -320,10 +329,11 @@ const Profile = () => {
           <DatePicker
               label='DateOfBirth'
               id='dateofbirth'
-              selected={basicUserInfo.dateofbirth}
+              selected={startdate}
               error={validity.dateofbirth.error}
               helperText={validity.dateofbirth.helper}
-              callback={(date) => {
+              onChange={(date) => {
+                  setStartDate(date);
                   date = date == null ? null : getIsoString(date);
                   setBasicUserInfo((old) => {
                     return { ...old, dateofbirth: date };
@@ -351,30 +361,30 @@ const Profile = () => {
       >
         <TextField
           placeholder='Old password'
-          id='OldPassword'
+          id='OldPass'
           type='password'
           sx={{ width: '100%' }}
-          value={passwordInfo.oldPassword}
-          error={passwordValidity.oldPassword.error}
-          helperText={passwordValidity.oldPassword.helper}
+          value={passwordInfo.oldPass}
+          error={passwordValidity.oldPass.error}
+          helperText={passwordValidity.oldPass.helper}
           onChange={(e) => {
             setPasswordInfo((old) => {
-              return { ...old, oldPassword: e.target.value };
+              return { ...old, oldPass: e.target.value };
             });
           }}
           required
         />
         <TextField
           placeholder='New password'
-          id='newPassword'
+          id='newPass'
           type='password'
           sx={{ width: '100%' }}
-          value={passwordInfo.newPassword}
-          error={passwordValidity.newPassword.error}
-          helperText={passwordValidity.newPassword.helper}
+          value={passwordInfo.newPass}
+          error={passwordValidity.newPass.error}
+          helperText={passwordValidity.newPass.helper}
           onChange={(e) => {
             setPasswordInfo((old) => {
-              return { ...old, newPassword: e.target.value };
+              return { ...old, newPass: e.target.value };
             });
           }}
           required
@@ -420,8 +430,8 @@ var basicUserInit = {
 };
 
 const passwordInfoInit = {
-  oldPassword: '',
-  newPassword: '',
+  oldPass: '',
+  newPass: '',
   repeatNewPassword: '',
 };
 
@@ -453,11 +463,11 @@ const fieldValidityInit = {
 };
 
 const passwordFieldValidityInitInit = {
-  oldPassword: {
+  oldPass: {
     error: false,
     helper: '',
   },
-  newPassword: {
+  newPass: {
     error: false,
     helper: '',
   },
@@ -525,9 +535,9 @@ const validatePassword = (user) => {
       updatePasswordFieldValidityInit[field].helper = '';
 
       // Check password and repeatPassword
-      if (user.newPassword !== user.repeatNewPassword) {
-        updatePasswordFieldValidityInit.newPassword.error = true;
-        updatePasswordFieldValidityInit.newPassword.helper =
+      if (user.newPass !== user.repeatNewPassword) {
+        updatePasswordFieldValidityInit.newPass.error = true;
+        updatePasswordFieldValidityInit.newPass.helper =
           'Passwords do not match';
         updatePasswordFieldValidityInit.repeatNewPassword.error = true;
         updatePasswordFieldValidityInit.repeatNewPassword.helper =

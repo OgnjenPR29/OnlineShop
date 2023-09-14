@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using ServiceLayer.DataBase.User;
+using ServiceLayer.DataBase;
 
 namespace ServiceLayer
 {
@@ -35,6 +37,23 @@ namespace ServiceLayer
 
 		public void MapUser()
 		{
+			CreateMap<User, BasicInfoDto>().ReverseMap();
+
+			CreateMap<Admin, BasicInfoDto>().ReverseMap();
+
+			CreateMap<Shopper, BasicInfoDto>().ReverseMap();
+
+			CreateMap<Salesman, BasicInfoDto>().ReverseMap();
+
+			CreateMap<User, UserDto>().ReverseMap();
+
+			CreateMap<Admin, UserDto>().ReverseMap();
+
+			CreateMap<Shopper, UserDto>().ReverseMap();
+
+			CreateMap<Salesman, UserDto>().ReverseMap();
+
+			CreateMap<Salesman, SalesmanDto>().ReverseMap();
 		}
 
 		public void MapArticle()

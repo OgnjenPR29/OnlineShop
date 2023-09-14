@@ -48,6 +48,8 @@ const useHttp = (resolve) => {
     (url) => {
       prepare();
 
+      console.log(getRawToken())
+
       fetch(url, {
         method: 'GET',
         mode: 'cors',

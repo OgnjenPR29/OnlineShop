@@ -37,6 +37,9 @@ namespace ServiceLayer.Services
 			IServiceOperationResult operationResult;
 
 			IUser user = _helper.FindUserByJwt(jwtDto.Token);
+
+            Console.WriteLine(user);
+
 			if (user == null)
 			{
 				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound);

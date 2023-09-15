@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ServiceLayer.DataBase.User;
 using ServiceLayer.DataBase;
+using ServiceLayer.DataBase.ArticleDto;
 
 namespace ServiceLayer
 {
@@ -58,6 +59,11 @@ namespace ServiceLayer
 
 		public void MapArticle()
 		{
+			CreateMap<Article, ArticleDetailDto>().ReverseMap();
+
+			CreateMap<Article, UpdateArticleDto>().ReverseMap();
+
+			CreateMap<Article, NewArticleDto>().ReverseMap();
 		}
 
 		public void MapOrder()

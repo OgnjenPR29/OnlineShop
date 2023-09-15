@@ -1,55 +1,59 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Orders from '../../components/Orders/Orders';
 import useServices from '../../services/useServices';
 import UserContext from '../../context/UserContext';
+import Articles from '../../components/Articles/Articles';
 
-const AllOrders = () => {
+const SalesmansArticles = () => {
   const {
     data,
     error,
     statusCode,
     isLoading,
-    getAllOrdersRequest,
+    getSalesmansArticlesRequest,
     clearRequest,
   } = useServices();
-  const [orders, setOrders] = useState([]);
+  const [articles, setArticles] = useState([]);
   const { role } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllOrdersRequest();
-  }, [getAllOrdersRequest]);
+    getSalesmansArticlesRequest();
+  }, [getSalesmansArticlesRequest]);
 
   useEffect(() => {
     if (isLoading) {
       return;
     } else if (statusCode === 200 && !error && data) {
-      setOrders(data.orders);
+      data?.articles.forEach((item) => {
+        item.image = 'data:image/*;base64,' + item.image;
+      });
+      setArticles(data.articles);
+
       clearRequest();
     } else if (statusCode !== 200 && error) {
-      alert(statusCode, error);
+      //alert(statusCode, error);
     }
   }, [isLoading, statusCode, error, data, clearRequest]);
 
-  const handleButton = (id) => {
-    navigate('/orders/' + id);
+  const handleButton = (article) => {
+    navigate('/articles/' + article.name);
   };
 
   return (
     <>
       {!isLoading && (
-        <Orders
-          data={orders}
+        <Articles
+          data={articles}
           role={role}
           hasButton={true}
           buttonCallback={handleButton}
           buttonText='Details'
-        ></Orders>
+        ></Articles>
       )}
     </>
   );
 };
 
-export default AllOrders;
+export default SalesmansArticles;

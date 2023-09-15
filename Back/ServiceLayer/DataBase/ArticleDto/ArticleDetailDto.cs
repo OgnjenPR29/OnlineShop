@@ -15,7 +15,7 @@ namespace ServiceLayer.DataBase.ArticleDto
 			Description = description;
 			Quantity = quantity;
 			Price = price;
-			ProductImage = productImage;
+			Image = productImage;
 		}
 
 		public long Id { get; set; }
@@ -28,6 +28,6 @@ namespace ServiceLayer.DataBase.ArticleDto
 
 		public double Price { get; set; }
 
-		public byte[] ProductImage { get; set; }
+		public byte[] Image { get; set; }
 	}
 }

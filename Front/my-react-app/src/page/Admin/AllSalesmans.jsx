@@ -68,9 +68,9 @@ const AllSalesmans = () => {
           margin: '0,60,0,0',
         }}
       >
-        <TableContainer component={Paper} elevation={4}>
+        <TableContainer component={Paper} elevation={4} sx={{ marginTop: '100px'}}>
           <Table
-            sx={{ padding: '5px', width: '100%' }}
+            sx={{ padding: '5px', width: '100%', }}
             aria-label='simple table'
           >
             <TableHead>

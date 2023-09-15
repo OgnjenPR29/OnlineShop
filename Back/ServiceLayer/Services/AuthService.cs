@@ -133,6 +133,7 @@ namespace ServiceLayer.Services
             else if (registerDto.Role == UserType.Salesman.ToString())
             {
                 Salesman seller = _mapper.Map<Salesman>(registerDto);
+                seller.ApprovalStatus = Status.PENDING;
                 workingRepository.SalesmanRepository.Add(seller);
 
                 return seller;

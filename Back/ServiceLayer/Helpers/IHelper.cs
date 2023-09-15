@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DataLayer.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using ServiceLayer.DataBase.ArticleDto;
 using System;
@@ -33,6 +34,12 @@ namespace ServiceLayer.Helpers
         public bool IsOrderPending(IOrder order);
         public List<IOrder> GetFinishedOrders(List<IOrder> orders);
         public List<IOrder> GetPendingOrders(List<IOrder> orders);
+        public void AddProductImageIfExists(IArticle article, IFormFile receivedImage, long sellerId);
+        public byte[] GetArticleProductImage(IArticle article);
+        public void DeleteArticleProductImageIfExists(IArticle article);
+
+
+
 
 
 

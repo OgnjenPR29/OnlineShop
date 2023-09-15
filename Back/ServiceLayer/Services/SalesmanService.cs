@@ -53,7 +53,7 @@ namespace ServiceLayer.Services
 
 			if (((Salesman)seller).ApprovalStatus != Status.APPROVED)
 			{
-				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Salesman isn't approved!");
 
 				return operationResult;
 			}
@@ -68,7 +68,7 @@ namespace ServiceLayer.Services
 			Article article = _mapper.Map<Article>(articleDto);
 			article.SalesmanId = seller.Id;
 
-			//sellerHelper.AddProductImageIfExists(article, articleDto.ProductImage, seller.Id);
+			_helper.AddProductImageIfExists(article, articleDto.Image, seller.Id);
 
 			workingRepo.ArticleRepository.Add(article);
 			workingRepo.Commit();
@@ -246,7 +246,11 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			ArticleDetailDto articleDto = new ArticleDetailDto(article.Id, article.Name, article.Description, article.Quantity, article.Price, null);
+			var image = _helper.GetArticleProductImage(article);
+
+            Console.WriteLine(image);
+
+			ArticleDetailDto articleDto = new ArticleDetailDto(article.Id, article.Name, article.Description, article.Quantity, article.Price, image);
 
 			operationResult = new ServiceOperationResult(true, articleDto);
 
@@ -397,6 +401,49 @@ namespace ServiceLayer.Services
 
 		}
 
+		public IServiceOperationResult UpdateArticleProductImage(UpdateArticleImageDto articleDto, JwtDto jwtDto)
+		{
+			IServiceOperationResult operationResult;
+
+			ISalesman seller = (ISalesman)_helper.FindUserByJwt(jwtDto.Token);
+			if (seller == null)
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Salesman doesn't exist!");
+
+				return operationResult;
+			}
+
+			if (((Salesman)seller).ApprovalStatus != Status.APPROVED)
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Seller isn't approved!");
+
+				return operationResult;
+			}
+
+			IArticle article = (workingRepo.ArticleRepository.FindFirst(x => x.SalesmanId == seller.Id && x.Name == articleDto.Name));
+			if (article == null)
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound,
+					$"Article named \"{articleDto.Name}\" doesn't exist among sellers aricles!");
+
+				return operationResult;
+			}
+
+			if (articleDto.Image == null)
+			{
+				_helper.DeleteArticleProductImageIfExists(article);
+				article.Image = null;
+			}
+
+			_helper.AddProductImageIfExists(article, articleDto.Image, seller.Id);
+
+			workingRepo.ArticleRepository.Update((Article)article);
+			workingRepo.Commit();
+
+			operationResult = new ServiceOperationResult(true);
+
+			return operationResult;
+		}
 
 	}
 }

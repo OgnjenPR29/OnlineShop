@@ -5,13 +5,13 @@ import Orders from '../../components/Orders/Orders';
 import useServices from '../../services/useServices';
 import UserContext from '../../context/UserContext';
 
-const AllOrders = () => {
+const SalesmansPendingOrders = () => {
   const {
     data,
     error,
     statusCode,
     isLoading,
-    getAllOrdersRequest,
+    getSalesmansPendingOrders,
     clearRequest,
   } = useServices();
   const [orders, setOrders] = useState([]);
@@ -19,8 +19,8 @@ const AllOrders = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllOrdersRequest();
-  }, [getAllOrdersRequest]);
+    getSalesmansPendingOrders();
+  }, [getSalesmansPendingOrders]);
 
   useEffect(() => {
     if (isLoading) {
@@ -34,7 +34,7 @@ const AllOrders = () => {
   }, [isLoading, statusCode, error, data, clearRequest]);
 
   const handleButton = (id) => {
-    navigate('/orders/' + id);
+    navigate('/pending-orders/' + id);
   };
 
   return (
@@ -52,4 +52,4 @@ const AllOrders = () => {
   );
 };
 
-export default AllOrders;
+export default SalesmansPendingOrders;

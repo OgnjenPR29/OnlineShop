@@ -1,6 +1,7 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 using DataLayer.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceLayer.DataBase.ArticleDto;
@@ -172,8 +173,11 @@ namespace ServiceLayer.Helpers
 				new Claim(ClaimTypes.Role, UserType.Salesman.ToString()),
 				new Claim("role", UserType.Salesman.ToString()),
 				new Claim("id", seller.Id.ToString()),
-				new Claim("username", seller.Username)
+				new Claim("username", seller.Username),
+				new Claim("status", seller.ApprovalStatus.ToString())
 			};
+
+            Console.WriteLine(seller.ApprovalStatus);
 
 			string token = IssueJwt(claims);
 
@@ -280,6 +284,48 @@ namespace ServiceLayer.Helpers
 			}
 
 			return finishedOrders;
+		}
+		public void AddProductImageIfExists(IArticle article, IFormFile receivedImage, long sellerId)
+		{
+			if (receivedImage == null)
+			{
+				return;
+			}
+
+			string profileImageDir = Path.Combine(Directory.GetCurrentDirectory(), ArticleImageRelativePath);
+
+			if (!Directory.Exists(profileImageDir))
+			{
+				Directory.CreateDirectory(profileImageDir);
+			}
+
+			string fileExtension = Path.GetExtension(receivedImage.FileName);
+			string imageName = sellerId + "_" + article.Name;
+			string profileImageFileName = Path.Combine(profileImageDir, imageName) + fileExtension;
+
+			using (FileStream fs = new FileStream(profileImageFileName, FileMode.Create))
+			{
+				receivedImage.CopyTo(fs);
+			}
+
+			article.Image = imageName + fileExtension;
+		}
+		public void DeleteArticleProductImageIfExists(IArticle article)
+		{
+			if (article.Image == null)
+			{
+				return;
+			}
+
+			string productImageName = article.Image;
+			string productImagePath = Path.Combine(Directory.GetCurrentDirectory(), ArticleImageRelativePath, productImageName);
+
+			if (!File.Exists(productImagePath))
+			{
+				return;
+			}
+
+			File.Delete(productImagePath);
 		}
 		public void UpdateBasicUserData(IUser currentUser, IUser newUser)
 		{

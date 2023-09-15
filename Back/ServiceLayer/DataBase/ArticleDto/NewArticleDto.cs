@@ -17,7 +17,7 @@ namespace ServiceLayer.DataBase.ArticleDto
 
         public double Price { get; set; }
 
-        public IFormFile ProductImage { get; set; }
+        public IFormFile Image { get; set; }
 
     }
 }

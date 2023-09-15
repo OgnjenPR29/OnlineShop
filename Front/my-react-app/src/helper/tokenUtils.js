@@ -82,6 +82,8 @@ export const getUser = () => {
     rawToken: getRawToken(),
   };
 
+  console.log(user)
+
   return user;
 };
 

@@ -17,15 +17,15 @@ const getAllSalesmansUrl =
 const updateSalesmanStatusUrl =
   baseUrl + process.env.REACT_APP_API_UPDATE_APPROVAL_STATUS_URL;
 const allOrdersUrl = baseUrl + process.env.REACT_APP_API_ALL_ORDERS_URL;
-const getSellersFinishedOrdersUrl =
+const getSalesmansFinishedOrdersUrl =
   baseUrl + process.env.REACT_APP_API_SALESMAN_FINISHED_ORDERS_URL;
-const getSellersPendingOrdersUrl =
+const getSalesmansPendingOrdersUrl =
   baseUrl + process.env.REACT_APP_API_SALESMAN_PENDING_ORDERS_URL;
-const getSellersOrderDetailsUrl =
+const getSalesmansOrderDetailsUrl =
   baseUrl + process.env.REACT_APP_API_ORDER_DETAILS_URL;
-const getSellerArticleDetailsUrl =
+const getSalesmanArticleDetailsUrl =
   baseUrl + process.env.REACT_APP_API_SALESMAN_GET_ARTICLE_DETAILS_URL;
-const getSellerArticlesUrl =
+const getSalesmanArticlesUrl =
   baseUrl + process.env.REACT_APP_API_SALESMAN_ARTICLES_URL;
 const updateArticleUrl =
   baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_URL;
@@ -128,6 +128,61 @@ const useServices = () => {
       [getRequest]
     );
 
+    const getSalesmansFinishedOrders = useCallback(() => {
+      getRequest(getSalesmansFinishedOrdersUrl);
+    }, [getRequest]);
+  
+    const getSalesmansPendingOrders = useCallback(() => {
+      getRequest(getSalesmansPendingOrdersUrl);
+    }, [getRequest]);
+  
+    const getSalesmansOrderDetailsRequest = useCallback(
+      (id) => {
+        getRequest(getSalesmansOrderDetailsUrl + '?id=' + id);
+      },
+      [getRequest]
+    );
+  
+    const getSalesmanArticleDetailsRequest = useCallback(
+      (name) => {
+        getRequest(getSalesmanArticleDetailsUrl + '?name=' + name);
+      },
+      [getRequest]
+    );
+  
+    const getSalesmansArticlesRequest = useCallback(() => {
+      getRequest(getSalesmanArticlesUrl);
+    }, [getRequest]);
+  
+    const updateArticleRequest = useCallback(
+      (article) => {
+        console.log(article, updateArticleUrl);
+        putRequest(updateArticleUrl, article);
+      },
+      [putRequest]
+    );
+  
+    const updateArticleProductImageRequest = useCallback(
+      (article) => {
+        putRequestFormData(updateArticleProductImageUrl, article);
+      },
+      [putRequestFormData]
+    );
+  
+    const postArticleRequest = useCallback(
+      (article) => {
+        postRequestFormData(postArticleUrl, article);
+      },
+      [postRequestFormData]
+    );
+
+    const deleteArticleRequest = useCallback(
+      (name) => {
+        deleteRequest(deleteArticleUrl + '?name=' + name);
+      },
+      [deleteRequest]
+    );
+
     
       return {
         data,
@@ -145,7 +200,16 @@ const useServices = () => {
         getAllSalesmansRequest,
         updateSalesmanStatusRequest,
         getAllOrdersRequest,
-        getAdminOrderDetailsRequest
+        getAdminOrderDetailsRequest,
+        getSalesmansFinishedOrders,
+        getSalesmansPendingOrders,
+        getSalesmansOrderDetailsRequest,
+        getSalesmanArticleDetailsRequest,
+        getSalesmansArticlesRequest,
+        updateArticleProductImageRequest,
+        postArticleRequest,
+        updateArticleRequest,
+        deleteArticleRequest
       };
 
     };

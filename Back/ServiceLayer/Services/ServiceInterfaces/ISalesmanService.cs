@@ -18,8 +18,10 @@ namespace ServiceLayer.Services.ServiceInterfaces
         IServiceOperationResult GetPreviousOrders(JwtDto jwtDto);
         IServiceOperationResult GetNewOrders(JwtDto jwtDto);
         IServiceOperationResult GetOrderInfo(JwtDto jwtDto, long id);
-        
+        IServiceOperationResult UpdateArticleProductImage(UpdateArticleImageDto articleDto, JwtDto jwtDto);
+
+
 
 
         }
-    }
+}

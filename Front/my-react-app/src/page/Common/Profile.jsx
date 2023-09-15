@@ -99,7 +99,7 @@ const Profile = () => {
     }
 
     if ((statusCode === 200 || statusCode === 204) && !error && data && fetchingProfile) {
-      console.log('sad smo ovde')
+      console.log(role)
       setFetchingProfile(false);
       setBasicUserInfo(data);
       clearRequest();

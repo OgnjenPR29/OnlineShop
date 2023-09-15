@@ -48,7 +48,7 @@ namespace OnlineShop.Controllers
             }
         }
 
-        [HttpPut("articles")]
+        [HttpGet("articles")]
         [Authorize(Roles = "Salesman")]
         public IActionResult GetArticles()
         {
@@ -219,5 +219,28 @@ namespace OnlineShop.Controllers
             }
         }
 
+        [HttpPut("product-image")]
+        [Authorize(Roles = "Salesman")]
+        public IActionResult UpdateArticleProductImage([FromForm] UpdateArticleImageDto article)
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
+                JwtDto jwtDto = new JwtDto(token);
+
+                IServiceOperationResult result = salesmanService.UpdateArticleProductImage(article, jwtDto);
+
+                if (!result.IsSuccessful)
+                {
+                    return StatusCode((int)result.ErrorCode, result.ErrorMessage);
+                }
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

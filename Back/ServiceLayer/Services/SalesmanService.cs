@@ -108,7 +108,7 @@ namespace ServiceLayer.Services
 			workingRepo.ArticleRepository.Remove((Article)article);
 			workingRepo.Commit();
 
-			//sellerHelper.DeleteArticleProductImageIfExists(article);
+			_helper.DeleteArticleProductImageIfExists(article);
 
 			operationResult = new ServiceOperationResult(true);
 
@@ -269,6 +269,15 @@ namespace ServiceLayer.Services
 
 				return operationResult;
             }
+			//List<IOrder> orders = workingRepo.OrderRepository.GetAll().ToList<IOrder>();
+
+			/*foreach(Order order in orders) {
+				foreach(Item item in order.Items)
+                {
+					if ((item.Article.SalesmanId == salesman.Id) && IsOrderPending(order))
+						orders.Remove(order);
+                }
+			}*/
 
 			List<IOrder> orders = workingRepo.OrderRepository.ItemsAndArticles(
 				order => order.Items.FirstOrDefault(item => item.Article.SalesmanId == salesman.Id) != null).ToList<IOrder>();
@@ -277,15 +286,39 @@ namespace ServiceLayer.Services
 
 			orders.ForEach(order => order.Items = order.Items.ToList().FindAll(item => item.Article.SalesmanId == salesman.Id));
 
-			OrderListDto orderListDto = new OrderListDto()
-			{
+			OrderListDto orderListDto = new OrderListDto();
+			orderListDto.Orders = new List<OrderInfoDto>();
+			/*{
 				Orders = _mapper.Map<List<OrderInfoDto>>(orders)
-			};
+			};*/
+
+			foreach(var o in orders)
+            {
+				OrderInfoDto oi = new OrderInfoDto();
+				oi.Address = o.Address;
+				oi.Comment = o.Comment;
+				oi.Created = o.Created;
+				oi.Id = o.Id;
+				oi.TotalPrice = o.TotalPrice;
+				oi.Items = new List<ItemDto>();
+				foreach(var i in o.Items)
+                {
+					ItemDto io = new ItemDto();
+					io.ArticleId = i.ArticleId;
+					io.ArticleName = i.ArticleName;
+					io.PricePerUnit = i.PricePerUnit;
+					io.Quantity = i.Quantity;
+					byte[] image = _helper.GetArticleProductImage(i.Article);
+					io.ArticleImage = image;
+					oi.Items.Add(io);
+				}
+				orderListDto.Orders.Add(oi);
+            }
 
 			foreach (var orderDto in orderListDto.Orders)
 			{
 				IOrder relatedOrder = orders.Find(x => x.Id == orderDto.Id);
-				orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, relatedOrder.DeliveryInSeconds);
+				orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.Created, relatedOrder.DeliveryInSeconds);
 			}
 
 			operationResult = new ServiceOperationResult(true, orderListDto);
@@ -350,15 +383,41 @@ namespace ServiceLayer.Services
 
 				orders.ForEach(order => order.Items = order.Items.ToList().FindAll(item => item.Article.SalesmanId == salesman.Id));
 
-				OrderListDto orderListDto = new OrderListDto()
-				{
+			OrderListDto orderListDto = new OrderListDto();
+			orderListDto.Orders = new List<OrderInfoDto>();
+				/*{
 					Orders = _mapper.Map<List<OrderInfoDto>>(orders)
-				};
+				};*/
 
-				foreach (var orderDto in orderListDto.Orders)
+
+			foreach (var o in orders)
+			{
+				OrderInfoDto oi = new OrderInfoDto();
+				oi.Address = o.Address;
+				oi.Comment = o.Comment;
+				oi.Created = o.Created;
+				oi.Id = o.Id;
+				oi.TotalPrice = o.TotalPrice;
+				oi.Items = new List<ItemDto>();
+				foreach (var i in o.Items)
+				{
+					ItemDto io = new ItemDto();
+					io.ArticleId = i.ArticleId;
+					io.ArticleName = i.ArticleName;
+					io.PricePerUnit = i.PricePerUnit;
+					io.Quantity = i.Quantity;
+					byte[] image = _helper.GetArticleProductImage(i.Article);
+					io.ArticleImage = image;
+					oi.Items.Add(io);
+				}
+				orderListDto.Orders.Add(oi);
+			}
+
+
+			foreach (var orderDto in orderListDto.Orders)
 				{
 					IOrder relatedOrder = orders.Find(x => x.Id == orderDto.Id);
-					orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, relatedOrder.DeliveryInSeconds);
+					orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.Created, relatedOrder.DeliveryInSeconds);
 				}
 
 				operationResult = new ServiceOperationResult(true, orderListDto);
@@ -389,11 +448,25 @@ namespace ServiceLayer.Services
 			}
 
 			OrderInfoDto orderDto = _mapper.Map<OrderInfoDto>(order);
-			orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, order.DeliveryInSeconds);
+			orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.Created, order.DeliveryInSeconds);
 
 			List<IItem> items = workingRepo.ItemRepository.FindAllIncludeArticles((item) => item.OrderId == id).ToList<IItem>();
 			items.RemoveAll(item => item.Article.SalesmanId != salesman.Id);
-			orderDto.Items = _mapper.Map<List<ItemDto>>(items);
+			//orderDto.Items = _mapper.Map<List<ItemDto>>(items);
+			orderDto.Items = new List<ItemDto>();
+
+				foreach (var i in items)
+				{
+					ItemDto io = new ItemDto();
+					io.ArticleId = i.ArticleId;
+					io.ArticleName = i.ArticleName;
+					io.PricePerUnit = i.PricePerUnit;
+					io.Quantity = i.Quantity;
+					byte[] image = _helper.GetArticleProductImage(i.Article);
+					io.ArticleImage = image;
+					orderDto.Items.Add(io);
+				}
+
 
 			operationResult = new ServiceOperationResult(true, orderDto);
 

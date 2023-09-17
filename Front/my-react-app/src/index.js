@@ -23,10 +23,10 @@ const theme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
      <BrowserRouter>
-      <UserContextProvider>
+      <ContextProvider>
         <GoogleOAuthProvider clientId='19815919039-igkkmbt256ijmj205mgp6o5uch8esbp2.apps.googleusercontent.com'>
           <App />
         </GoogleOAuthProvider>
-      </UserContextProvider>
+      </ContextProvider>
     </BrowserRouter>
 );

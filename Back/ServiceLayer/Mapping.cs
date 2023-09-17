@@ -9,6 +9,8 @@ using AutoMapper;
 using ServiceLayer.DataBase.User;
 using ServiceLayer.DataBase;
 using ServiceLayer.DataBase.ArticleDto;
+using ServiceLayer.DataBase.Order;
+using ServiceLayer.DataBase.Item;
 
 namespace ServiceLayer
 {
@@ -68,7 +70,14 @@ namespace ServiceLayer
 
 		public void MapOrder()
 		{
-			
+			CreateMap<Item, PlaceItemDto>().ReverseMap();
+
+			CreateMap<Order, OrderInfoDto>().ReverseMap();
+
+			CreateMap<Item, ItemDto>().ReverseMap();
+
+			CreateMap<Order, PlacedOrderDto>().ReverseMap();
+
 		}
 	}
 }

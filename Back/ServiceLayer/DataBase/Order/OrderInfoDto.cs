@@ -17,7 +17,7 @@ namespace ServiceLayer.DataBase.ArticleDto
 
 		public double TotalPrice { get; set; }
 
-		public DateTime PlacedTime { get; set; }
+		public DateTime Created { get; set; }
 
 		public string RemainingTime { get; set; }
 

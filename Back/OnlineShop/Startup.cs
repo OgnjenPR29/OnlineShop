@@ -71,6 +71,12 @@ namespace OnlineShop
 
             services.AddScoped<ISalesmanRepo, SalesmanRepo>();
 
+            services.AddScoped<IOrderRepo, OrderRepo>();
+
+            services.AddScoped<IItemRepo, ItemRepo>();
+
+            services.AddScoped<IArticleRepo, ArticleRepo>();
+
         }
 
 

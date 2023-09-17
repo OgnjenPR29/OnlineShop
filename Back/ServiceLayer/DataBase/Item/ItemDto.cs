@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.DataBase.Item
 {
-    public class ItemDto
+    public class ItemDto :IDTO
 	{
 		public long? ArticleId { get; set; }
 

@@ -1,20 +1,22 @@
 import { Routes, Route, Router } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
+import { Box } from '@mui/material';
+
+
 import UserContext from './context/UserContext';
 import OrderContext from './context/OrderContext';
 import OrderDetails from './components/Orders/OrderDetails';
+
 import Navbar from './components/Navbar';
-
-import AllSalesmans from './page/Admin/AllSalesmans';
-import AllOrders from './page/Admin/AllOrders';
-
-import { Box } from '@mui/material';
 
 import Home from './page/Home';
 import Login from './page/Authentication/Login';
 import Register from './page/Authentication/Register';
 import NotFound from './page/NotFound';
 import Profile from './page/Common/Profile';
+
+import AllSalesmans from './page/Admin/AllSalesmans';
+import AllOrders from './page/Admin/AllOrders';
 
 import SalesmansArticles from './page/salesman/SalesmansArticles';
 
@@ -23,6 +25,10 @@ import SalesmansPendingOrders from './page/salesman/SalesmansPendingOrders';
 import ArticleDetails from './components/Articles/ArticleDetails';
 import NewArticle from './page/salesman/NewArticle';
 
+import ShopperPendingOrders from './page/ShopperPendingOrders';
+import ShopperFinishedOrders from './page/ShopperFinishedOrders';
+import ShopperArticles from './page/ShopperArticles';
+import Order from './page/Order';
 
 function App() {
   const { loadUser, ...userContext } = useContext(UserContext);
@@ -39,6 +45,13 @@ function App() {
   useEffect(() => {
     loadUser();
   }, [loadUser]);
+
+
+  useEffect(() => {
+    if (!isLoggedin || role !== 'shopper') {
+      removeOrder();
+    }
+  }, [isLoggedin, removeOrder, role]);
 
   console.log("usaoo")
 
@@ -62,6 +75,13 @@ function App() {
         {approvedSalesman && (<Route path='/pending-orders/:id' element={<OrderDetails />} />)}
         {approvedSalesman && (<Route path='/articles/:name' element={<ArticleDetails />} />)}
         {approvedSalesman && (<Route path='/new-article' element={<NewArticle />} />)}
+        
+        {role === 'shopper' && (<Route path='/articles' element={<ShopperArticles />} />)}
+        {role === 'shopper' && (<Route path='/finished-orders' element={<ShopperFinishedOrders />} />)}
+        {role === 'shopper' && (<Route path='/finished-orders/:id' element={<OrderDetails />} />)}
+        {role === 'shopper' && (<Route path='/pending-orders' element={<ShopperPendingOrders />} />)}
+        {role === 'shopper' && (<Route path='/pending-orders/:id' element={<OrderDetails />} />)}
+        {role === 'shopper' && orderContext.hasItems() && (<Route path='/order' element={<Order />} />)}
         
         <Route path='*' element={<NotFound />} />
       </Routes>

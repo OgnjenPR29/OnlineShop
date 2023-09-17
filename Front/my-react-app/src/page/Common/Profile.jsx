@@ -19,6 +19,8 @@ import useServices from '../../services/useServices';
 import UploadButton from '../../components/UploadButton';
 import UserContext from '../../context/UserContext';
 
+import { parseISO } from 'date-fns';
+
 const Profile = () => {
 
   const { role, status } = useContext(UserContext);
@@ -89,8 +91,7 @@ const Profile = () => {
   useEffect(() => {
     getUserProfileRequest();
   }, [getUserProfileRequest]);
-
-  const [startdate, setStartDate] = useState(new Date());
+  const [startdate, setStartDate] = useState();
 
   useEffect(() => {
 
@@ -103,6 +104,8 @@ const Profile = () => {
       setFetchingProfile(false);
       setBasicUserInfo(data);
       clearRequest();
+      console.log(data.dateOfBirth)
+      setStartDate(parseISO(data.dateOfBirth))
       setFetchingProfileImage(true);
       getProfileImageRequest();
     }
@@ -236,7 +239,7 @@ const Profile = () => {
               )}
             {role.toLowerCase() === 'salesman' &&
               status?.toLowerCase() === 'approved' && (
-                <Typography variant='h5' color='primary' paddingBottom='15px'>
+                <Typography variant='h5' color='primary' paddingBottom='15px' sx={{marginLeft:'30%'}}>
                   (Approved)
                 </Typography>
               )}

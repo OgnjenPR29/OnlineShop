@@ -61,7 +61,7 @@ const ArticleDetails = () => {
       getSalesmanArticleDetailsRequest(article.newName);
       alert('Successfully updated article info!');
     } else if (statusCode === 200 && !error && updatingProductImage) {
-      setUpdatingProductImage(false);
+      setUpdatingProductImage(false); 
       setFetchingArticle(true);
       clearRequest();
       getSalesmanArticleDetailsRequest(name);

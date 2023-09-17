@@ -10,9 +10,11 @@ import { Link, Box } from '@mui/material';
 import { teal } from '@mui/material/colors';
 
 import UserContext from '../context/UserContext';
+import OrderContext from '../context/OrderContext';
 
 const Navbar = () => {
   const userContext = useContext(UserContext);
+  const orderContext = useContext(OrderContext);
 
   const location = useLocation();
   const underlineColor = teal[300];
@@ -179,6 +181,14 @@ const Navbar = () => {
               }}
             >
               Sign up
+            </Link>
+          )}
+          
+          {isLoggedin && orderContext.hasItems() && (
+            <Link component={RouterLink} to='/order'>
+              <IconButton color='primary'>
+                <ShoppingBagIcon sx={{ fontSize: '40px' }} />
+              </IconButton>
             </Link>
           )}
          

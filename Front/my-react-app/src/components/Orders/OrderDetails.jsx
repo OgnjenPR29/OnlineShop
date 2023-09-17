@@ -19,8 +19,8 @@ const OrderDetails = () => {
   const { id } = useParams();
   const {
     getAdminOrderDetailsRequest,
-    getSellersOrderDetailsRequest,
-    getCustomerOrderDetailsRequest,
+    getSalesmansOrderDetailsRequest,
+    getShopperOrderDetailsRequest,
     clearRequest,
     isLoading,
     error,
@@ -31,12 +31,12 @@ const OrderDetails = () => {
 
   useEffect(() => {
     role.toLowerCase() === 'admin' && getAdminOrderDetailsRequest(id);
-    role.toLowerCase() === 'seller' && getSellersOrderDetailsRequest(id);
-    role.toLowerCase() === 'customer' && getCustomerOrderDetailsRequest(id);
+    role.toLowerCase() === 'salesman' && getSalesmansOrderDetailsRequest(id);
+    role.toLowerCase() === 'shopper' && getShopperOrderDetailsRequest(id);
   }, [
     getAdminOrderDetailsRequest,
-    getSellersOrderDetailsRequest,
-    getCustomerOrderDetailsRequest,
+    getSalesmansOrderDetailsRequest,
+    getShopperOrderDetailsRequest,
     id,
     role,
   ]);
@@ -59,21 +59,21 @@ const OrderDetails = () => {
   return (
     <>
       {order && (
-        <Container >
+        <Container sx={{marginTop:'20px', display:'flex', justifyContent:'center'}} >
           <Paper elevation={4}>
-            <Typography variant='h4'>Order {order?.id}</Typography>
+            <Typography variant='h4' sx={{marginLeft:'35%'}}>Order {order?.id}</Typography>
             <Box sx={{  width: '100%' }}>
               <TextField
                 id='comment'
                 label='Comment'
                 value={order?.comment}
                 multiline
-                rows={3}
+                rows={2}
                 disabled
                 sx={{
                   width: '100%',
                   '.MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: 'white',
+                    WebkitTextFillColor: 'black',
                   },
                 }}
                 aria-readonly='true'
@@ -87,10 +87,11 @@ const OrderDetails = () => {
                 value={order?.address}
                 disabled
                 sx={{
-                  width: '100%',
+                  width: '50%',
                   '.MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: 'white',
+                    WebkitTextFillColor: 'black',
                   },
+                  marginTop:'10px'
                 }}
                 aria-readonly='true'
                 variant='outlined'
@@ -101,10 +102,11 @@ const OrderDetails = () => {
                 value={order?.totalPrice}
                 disabled
                 sx={{
-                  width: '100%',
+                  width: '50%',
                   '.MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: 'white',
+                    WebkitTextFillColor: 'black',
                   },
+                  marginTop:'10px'
                 }}
                 aria-readonly='true'
                 variant='outlined'
@@ -114,13 +116,14 @@ const OrderDetails = () => {
               <TextField
                 id='placedTime'
                 label='Placed time'
-                value={getDateString(order?.placedTime)}
+                value={getDateString(order?.created)}
                 disabled
                 sx={{
-                  width: '100%',
+                  width: '50%',
                   '.MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: 'white',
+                    WebkitTextFillColor: 'black',
                   },
+                  marginTop:'10px'
                 }}
                 aria-readonly='true'
                 variant='outlined'
@@ -131,10 +134,11 @@ const OrderDetails = () => {
                 value={order?.remainingTime}
                 disabled
                 sx={{
-                  width: '100%',
+                  width: '50%',
                   '.MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: 'white',
+                    WebkitTextFillColor: 'black',
                   },
+                  marginTop:'10px'
                 }}
                 aria-readonly='true'
                 variant='outlined'
@@ -147,6 +151,8 @@ const OrderDetails = () => {
         <Container
           sx={{
             marginTop: '30px',
+            display:'flex',
+            justifyContent:'center'
           }}
         >
           <TableContainer component={Paper} elevation={4} sx={{ width: '80%' }}>

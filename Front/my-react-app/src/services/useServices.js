@@ -6,46 +6,27 @@ const registerUrl = baseUrl + process.env.REACT_APP_API_REGISTER_URL;
 const loginUrl = baseUrl + process.env.REACT_APP_API_LOGIN_URL;
 const getUserUrl = baseUrl + process.env.REACT_APP_API_GET_USER_URL;
 const updateUserUrl = baseUrl + process.env.REACT_APP_API_UPDATE_USER_URL;
-const changePasswordUrl =
-  baseUrl + process.env.REACT_APP_API_CHANGE_PASSWORD_URL;
-const getProfileImageUrl =
-  baseUrl + process.env.REACT_APP_API_GET_PROFILE_IMAGE_URL;
-const changeProfileImageUrl =
-  baseUrl + process.env.REACT_APP_API_CHANGE_PROFILE_IMAGE_URL;
-const getAllSalesmansUrl =
-  baseUrl + process.env.REACT_APP_API_ADMIN_ALL_SALESMANS_URL;
-const updateSalesmanStatusUrl =
-  baseUrl + process.env.REACT_APP_API_UPDATE_APPROVAL_STATUS_URL;
+const changePasswordUrl = baseUrl + process.env.REACT_APP_API_CHANGE_PASSWORD_URL;
+const getProfileImageUrl = baseUrl + process.env.REACT_APP_API_GET_PROFILE_IMAGE_URL;
+const changeProfileImageUrl = baseUrl + process.env.REACT_APP_API_CHANGE_PROFILE_IMAGE_URL;
+const getAllSalesmansUrl = baseUrl + process.env.REACT_APP_API_ADMIN_ALL_SALESMANS_URL;
+const updateSalesmanStatusUrl = baseUrl + process.env.REACT_APP_API_UPDATE_APPROVAL_STATUS_URL;
 const allOrdersUrl = baseUrl + process.env.REACT_APP_API_ALL_ORDERS_URL;
-const getSalesmansFinishedOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_FINISHED_ORDERS_URL;
-const getSalesmansPendingOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_PENDING_ORDERS_URL;
-const getSalesmansOrderDetailsUrl =
-  baseUrl + process.env.REACT_APP_API_ORDER_DETAILS_URL;
-const getSalesmanArticleDetailsUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_GET_ARTICLE_DETAILS_URL;
-const getSalesmanArticlesUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_ARTICLES_URL;
-const updateArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_URL;
-const updateArticleProductImageUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_IMAGE_URL;
-const deleteArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_DELETE_ARTICLE_URL;
-const postArticleUrl =
-  baseUrl + process.env.REACT_APP_API_SALESMAN_POST_ARTICLE_URL;
-const customerFinishedOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_CUSTOMER_FINISHED_ORDERS_URL;
-const customerPendingOrdersUrl =
-  baseUrl + process.env.REACT_APP_API_CUSTOMER_PENDING_ORDERS_URL;
-const customerArticlesUrl =
-  baseUrl + process.env.REACT_APP_API_CUSTOMER_ARTICLES_URL;
-const customerOrderUrl = baseUrl + process.env.REACT_APP_API_CUSTOMER_ORDER_URL;
-const customerDeleteOrderUrl =
-  baseUrl + process.env.REACT_APP_API_CUSTOMER_DELETE_ORDER;
-const customerPostOrderUrl =
-  baseUrl + process.env.REACT_APP_API_CUSTOMER_POST_ORDER_URL;
+const getSalesmansFinishedOrdersUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_FINISHED_ORDERS_URL;
+const getSalesmansPendingOrdersUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_PENDING_ORDERS_URL;
+const getSalesmansOrderDetailsUrl = baseUrl + process.env.REACT_APP_API_ORDER_DETAILS_URL;
+const getSalesmanArticleDetailsUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_GET_ARTICLE_DETAILS_URL;
+const getSalesmanArticlesUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_ARTICLES_URL;
+const updateArticleUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_URL;
+const updateArticleProductImageUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_UPDATE_ARTICLE_IMAGE_URL;
+const deleteArticleUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_DELETE_ARTICLE_URL;
+const postArticleUrl = baseUrl + process.env.REACT_APP_API_SALESMAN_POST_ARTICLE_URL;
+const shopperFinishedOrdersUrl =  baseUrl + process.env.REACT_APP_API_SHOPPER_FINISHED_ORDERS_URL;
+const shopperPendingOrdersUrl = baseUrl + process.env.REACT_APP_API_SHOPPER_PENDING_ORDERS_URL;
+const shopperArticlesUrl = baseUrl + process.env.REACT_APP_API_SHOPPER_ARTICLES_URL;
+const shopperOrderUrl = baseUrl + process.env.REACT_APP_API_SHOPPER_ORDER_URL;
+const shopperDeleteOrderUrl = baseUrl + process.env.REACT_APP_API_SHOPPER_DELETE_ORDER;
+const shopperPostOrderUrl = baseUrl + process.env.REACT_APP_API_SHOPPER_POST_ORDER_URL;
 const googleLoginUrl = baseUrl + process.env.REACT_APP_API_GOOGLE_LOGIN;
 
 const useServices = () => {
@@ -183,6 +164,40 @@ const useServices = () => {
       [deleteRequest]
     );
 
+    const getShopperFinishedOrdersRequest = useCallback(() => {
+      getRequest(shopperFinishedOrdersUrl);
+    }, [getRequest]);
+  
+    const getShopperPendingOrdersRequest = useCallback(() => {
+      getRequest(shopperPendingOrdersUrl);
+    }, [getRequest]);
+  
+    const getShopperArticlesRequest = useCallback(() => {
+      getRequest(shopperArticlesUrl);
+    }, [getRequest]);
+  
+    const getShopperOrderDetailsRequest = useCallback(
+      (id) => {
+        getRequest(shopperOrderUrl + '?id=' + id);
+      },
+      [getRequest]
+    );
+  
+    const postShopperOrderRequest = useCallback(
+      (order) => {
+        postRequest(shopperPostOrderUrl, order);
+      },
+      [postRequest]
+    );
+  
+    const deleteShopperOrderRequest = useCallback(
+      (orderId) => {
+        deleteRequest(shopperDeleteOrderUrl + '?orderId=' + orderId);
+      },
+      [deleteRequest]
+    );
+  
+
     
       return {
         data,
@@ -209,7 +224,13 @@ const useServices = () => {
         updateArticleProductImageRequest,
         postArticleRequest,
         updateArticleRequest,
-        deleteArticleRequest
+        deleteArticleRequest,
+        getShopperFinishedOrdersRequest,
+        getShopperPendingOrdersRequest,
+        getShopperArticlesRequest,
+        getShopperOrderDetailsRequest,
+        postShopperOrderRequest,
+        deleteShopperOrderRequest
       };
 
     };

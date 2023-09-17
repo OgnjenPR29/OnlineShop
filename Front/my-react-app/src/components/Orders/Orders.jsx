@@ -29,7 +29,7 @@ const Orders = ({
             margin: '0,60,0,0',
           }}
         >
-          <TableContainer component={Paper} elevation={4}>
+          <TableContainer component={Paper} elevation={4} sx={{marginTop:'30px'}}>
             <Table
               sx={{ padding: '5px', width: '100%' }}
               aria-label='simple table'
@@ -65,8 +65,8 @@ const Orders = ({
                     <TableCell
                       align='center'
                       sx={{ fontSize: '18px' }}
-                      colspan={
-                        userRole === 'customer' && cancelOrderCallback ? 2 : 1
+                      colSpan={
+                        userRole === 'shopper' && cancelOrderCallback ? 2 : 1
                       }
                     >
                       Action
@@ -87,7 +87,7 @@ const Orders = ({
                     <TableCell align='center'>{row.address}</TableCell>
                     <TableCell align='center'>{row.totalPrice}</TableCell>
                     <TableCell align='center'>
-                      {getDateString(row.placedTime)}
+                      {getDateString(row.created)}
                     </TableCell>
                     {userRole === 'admin' && (
                       <TableCell align='center'>
@@ -112,7 +112,7 @@ const Orders = ({
                       </TableCell>
                     )}
                     {hasButton &&
-                      userRole === 'customer' &&
+                      userRole === 'shopper' &&
                       cancelOrderCallback && (
                         <TableCell align='center'>
                           <Button

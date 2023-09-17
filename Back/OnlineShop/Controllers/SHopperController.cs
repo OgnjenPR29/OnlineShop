@@ -14,11 +14,11 @@ namespace OnlineShop.Controllers
 {
     [Route("api/shopper")]
     [ApiController]
-       public class SHopperController : ControllerBase
+       public class ShopperController : ControllerBase
     {
         IShopperService shopperService;
 
-        public SHopperController(IShopperService shopperService)
+        public ShopperController(IShopperService shopperService)
         {
             this.shopperService = shopperService;
         }

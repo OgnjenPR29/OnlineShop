@@ -27,6 +27,7 @@ export const OrderContextProvider = ({ children }) => {
   }, [addToLocalStorage]);
 
   const addItemToOrder = useCallback((article, quantity) => {
+
     setOrder((prevOrder) => {
       const updatedOrder = { ...prevOrder };
       if (!updatedOrder.items[article.id]) {
@@ -40,6 +41,7 @@ export const OrderContextProvider = ({ children }) => {
           updatedOrder.articles[article.id] = article;
         }
       }
+
       return updatedOrder;
     });
   }, []);

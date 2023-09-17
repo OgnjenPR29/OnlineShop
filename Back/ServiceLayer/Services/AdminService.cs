@@ -59,7 +59,7 @@ namespace ServiceLayer.Services
             foreach (var orderDto in dto.Orders)
             {
                 IOrder relatedOrder = orders.Find(x => x.Id == orderDto.Id);
-                orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, relatedOrder.DeliveryInSeconds);
+                orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.Created, relatedOrder.DeliveryInSeconds);
             }
 
             operationResult = new ServiceOperationResult(true, dto);
@@ -129,17 +129,31 @@ namespace ServiceLayer.Services
             }
 
             OrderInfoDto orderDto = _mapper.Map<OrderInfoDto>(order);
-            orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.PlacedTime, order.DeliveryInSeconds);
+            orderDto.RemainingTime = CalculateDeliveryRemainingTime(orderDto.Created, order.DeliveryInSeconds);
 
             List<IItem> items = workingRepo.ItemRepository.FindAllIncludeArticles((item) => item.OrderId == id).ToList<IItem>();
-            orderDto.Items = _mapper.Map<List<ItemDto>>(items);
+            //orderDto.Items = _mapper.Map<List<ItemDto>>(items);
 
-            /*foreach (var orderItem in orderDto.Items)
+            orderDto.Items = new List<ItemDto>();
+
+            foreach (var i in items)
+            {
+                ItemDto io = new ItemDto();
+                io.ArticleId = i.ArticleId;
+                io.ArticleName = i.ArticleName;
+                io.PricePerUnit = i.PricePerUnit;
+                io.Quantity = i.Quantity;
+                byte[] image = helper.GetArticleProductImage(i.Article);
+                io.ArticleImage = image;
+                orderDto.Items.Add(io);
+            }
+
+            foreach (var orderItem in orderDto.Items)
             {
                 IArticle article = items.Find(item => item.ArticleId == orderItem.ArticleId).Article;
-                byte[] image = sellerHelper.GetArticleProductImage(article);
+                byte[] image = helper.GetArticleProductImage(article);
                 orderItem.ArticleImage = image;
-            }*/
+            }
 
             operationResult = new ServiceOperationResult(true, orderDto);
 

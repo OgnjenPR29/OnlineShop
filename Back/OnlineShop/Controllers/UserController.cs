@@ -102,5 +102,53 @@ namespace OnlineShop.Controllers
             }
         }
 
+        [HttpGet("profile-image")]
+        [Authorize]
+        public IActionResult GetProfileImage()
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
+                JwtDto jwtDto = new JwtDto(token);
+
+                IServiceOperationResult operationResult = _userService.GetProfileImage(jwtDto);
+
+                if (!operationResult.IsSuccessful)
+                {
+                    return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+                }
+
+                return Ok(operationResult.Dto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [HttpPut("profile-image")]
+        [Authorize]
+        public IActionResult ChangeProfileImage([FromForm] ProfileImageDto profileImageDto)
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").LastOrDefault();
+                JwtDto jwtDto = new JwtDto(token);
+
+                IServiceOperationResult operationResult = _userService.UploadProfileImage(profileImageDto, jwtDto);
+
+                if (!operationResult.IsSuccessful)
+                {
+                    return StatusCode((int)operationResult.ErrorCode, operationResult.ErrorMessage);
+                }
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

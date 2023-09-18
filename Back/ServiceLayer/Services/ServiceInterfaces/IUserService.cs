@@ -15,6 +15,9 @@ namespace ServiceLayer.Services.ServiceInterfaces
 
         public IServiceOperationResult UpdateUser(BasicInfoDto newUserDto, JwtDto jwtDto);
 
+        public IServiceOperationResult GetProfileImage(JwtDto jwtDto);
+        public IServiceOperationResult UploadProfileImage(ProfileImageDto profileDto, JwtDto jwtDto);
+
 
     }
 }

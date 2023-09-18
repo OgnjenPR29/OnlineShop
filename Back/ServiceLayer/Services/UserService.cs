@@ -81,7 +81,7 @@ namespace ServiceLayer.Services
 				return operationResult;
 			}
 
-			//_helper.UpdateProfileImagePath(currentUser, newUser.Username);
+			_helper.UpdateProfileImagePath(currentUser, newUser.Username);
 			_helper.UpdateBasicUserData(currentUser, newUser);
 
 			if (!UpdateUser(currentUser))
@@ -162,5 +162,71 @@ namespace ServiceLayer.Services
 
 			return operationResult;
 		}
+
+		public IServiceOperationResult GetProfileImage(JwtDto jwtDto)
+		{
+			IServiceOperationResult operationResult;
+
+			IUser user = _helper.FindUserByJwt(jwtDto.Token);
+			if (user == null)
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound);
+
+				return operationResult;
+			}
+
+			if (user.Image == null)
+			{
+				operationResult = new ServiceOperationResult(true);
+				return operationResult;
+			}
+
+			byte[] image = _helper.GetProfileImage(user.Image);
+			if (image == null)
+			{
+				//operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound, "Users profile image has not been found!");
+				operationResult = new ServiceOperationResult(true);
+				return operationResult;
+			}
+
+			ByteProfileImageDto imageDto = new ByteProfileImageDto() { ProfileImage = image };
+			operationResult = new ServiceOperationResult(true, imageDto);
+
+			return operationResult;
+		}
+
+		public IServiceOperationResult UploadProfileImage(ProfileImageDto profileDto, JwtDto jwtDto)
+		{
+			IServiceOperationResult operationResult;
+
+			IUser user = _helper.FindUserByJwt(jwtDto.Token);
+			if (user == null)
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.NotFound);
+
+				return operationResult;
+			}
+
+			if (!_helper.UploadProfileImage(user, profileDto.ProfileImage))
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.BadRequest);
+
+				return operationResult;
+			}
+
+			if (!UpdateUser(user))
+			{
+				operationResult = new ServiceOperationResult(false, ServiceOperationErrorCode.BadRequest);
+
+				return operationResult;
+			}
+
+			workingRepo.Commit();
+
+			operationResult = new ServiceOperationResult(true);
+
+			return operationResult;
+		}
+
 	}
 }

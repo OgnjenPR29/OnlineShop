@@ -12,6 +12,7 @@ const UploadButton = ({
   image,
   alternativeToNoImage,
   buttonText,
+  hide
 }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const inputRef = useRef();
@@ -21,6 +22,7 @@ const UploadButton = ({
   width = width ?? '50%';
   direction = direction ?? 'row';
   buttonText = buttonText ?? 'Upload';
+  hide = hide ?? 'flex';
 
   useEffect(() => {
     if (image) {
@@ -61,6 +63,7 @@ const UploadButton = ({
       }}
     >
       {imageUrl && (
+        <Box>
         <img
           src={imageUrl}
           alt='Uploaded'
@@ -71,12 +74,13 @@ const UploadButton = ({
             inputRef.current.value = null;
           }}
         />
+        </Box>
       )}
       {alternativeToNoImage && !imageUrl && (
         <Typography>{alternativeToNoImage}</Typography>
       )}
       <label htmlFor='upload-image'>
-        <Button variant='contained' component='span'>
+        <Button variant='contained' component='span' style={{display: hide}}>
           {buttonText}
         </Button>
         <input

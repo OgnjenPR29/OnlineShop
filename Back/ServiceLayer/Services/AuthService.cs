@@ -3,12 +3,14 @@ using DataLayer;
 using DataLayer.Models;
 using DataLayer.Models.Interfaces;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Http;
 using ServiceLayer.DataBase.Auth;
 using ServiceLayer.Helpers;
 using ServiceLayer.Services.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -113,12 +115,31 @@ namespace ServiceLayer.Services
             return operationResult;
 
         }
+        private IFormFile DownloadProfileImage(string imageUrl)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = httpClient.GetAsync(imageUrl).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = response.Content.ReadAsStreamAsync().Result;
+
+                    var formFile = new FormFile(stream, 0, stream.Length, "profileImage", "profile.jpg");
+
+                    return formFile;
+                }
+            }
+
+            return null;
+        }
 
         private IUser CreateUserAndAddToRepository(RegDto registerDto)
         {
             if (registerDto.Role == UserType.Admin.ToString())
             {
                 Admin admin = _mapper.Map<Admin>(registerDto);
+                helper.UploadProfileImage(admin, registerDto.Image);
                 workingRepository.AdminRepository.Add(admin);
 
                 return admin;
@@ -126,6 +147,7 @@ namespace ServiceLayer.Services
             else if (registerDto.Role == UserType.Shopper.ToString())
             {
                 Shopper customer = _mapper.Map<Shopper>(registerDto);
+                helper.UploadProfileImage(customer, registerDto.Image);
                 workingRepository.ShopperRepository.Add(customer);
 
                 return customer;
@@ -134,6 +156,7 @@ namespace ServiceLayer.Services
             {
                 Salesman seller = _mapper.Map<Salesman>(registerDto);
                 seller.ApprovalStatus = Status.PENDING;
+                helper.UploadProfileImage(seller, registerDto.Image);
                 workingRepository.SalesmanRepository.Add(seller);
 
                 return seller;

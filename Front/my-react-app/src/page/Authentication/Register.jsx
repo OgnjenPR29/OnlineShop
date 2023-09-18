@@ -182,7 +182,7 @@ const Register = () => {
           <Box sx={{margin : '15px', display:'flex'}}>
             <FormControl
               sx={{
-                width: isAddedImage ? '30%' : '50%',
+                width: isAddedImage ? '70%' : '50%',
               }}
             >
               <InputLabel id='select-role-label' error={validity.role.error}>
@@ -205,16 +205,17 @@ const Register = () => {
               </Select>
             </FormControl>
             <UploadButtons
-              width={isAddedImage ? '70%' : '50%'}
-              maxHeightPerc='55%'
-              maxWidthPerc='55%'
-              id='profileImage'
+              width={isAddedImage ? '30%' : '50%'}
+              maxHeightPerc='75px'
+              maxWidthPerc='75px'
+              id='image'
+              hide = {isAddedImage ? 'none' : 'flex'}
               uploadCallback={(file) => {
-                user.current.profileImage = file;
+                user.current.Image = file;
                 setIsAddedImage(!!file);
               }}
               doubleClickCallback={(file) => {
-                user.current.profileImage = file;
+                user.current.Image = file;
                 setIsAddedImage(!!file);
               }}
             />
@@ -253,7 +254,7 @@ var userInit = {
   address: '',
   dateofbirth: '',
   role: '',
-  profileImage: null,
+  image: null,
 };
 
 const fieldValidity = {

@@ -37,7 +37,20 @@ namespace ServiceLayer.Services
 
             List<SalesmanDto> temp = _mapper.Map<List<SalesmanDto>>(salesmans);
 
+            foreach(var x in temp)
+            {
+                string imagePath = salesmans.Find(seller => seller.Username == x.Username).Image;
+                x.ProfileImage = helper.GetProfileImage(imagePath);
+            }
+
             SalesmanListDto dto = new SalesmanListDto() { Salesmans = temp };
+
+            /*foreach (var sellerDto in dto.Salesmans)
+            {
+                string imagePath = salesmans.Find(seller => seller.Username == sellerDto.Username).Image;
+                //sellerDto.ProfileImage = helper.GetProfileImage(imagePath);
+                sellerDto.ProfileImage = helper.GetProfileImage(imagePath);
+            }*/
 
             operationResult = new ServiceOperationResult(true, dto);
 

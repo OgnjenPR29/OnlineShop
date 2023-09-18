@@ -42,8 +42,8 @@ const AllSalesmans = () => {
     } else if (statusCode === 200 && !error && data && fetchingSalesmans) {
       setFetchingSalesmans(false);
       data?.salesmans.forEach((salesman) => { console.log(salesman)
-        salesman.salesmanProfileImage =
-          'data:image/*;base64,' + salesman.salesmanProfileImage;
+        salesman.profileImage =
+          'data:image/*;base64,' + salesman.profileImage;
       });
       setSalesmans(data?.salesmans);
       clearRequest();
@@ -116,7 +116,7 @@ const AllSalesmans = () => {
                       }}
                     >
                       <img
-                        src={row.salesmanProfileImage}
+                        src={row.profileImage}
                         alt=''
                         style={{ maxWidth: '120px', maxHeight: '120px' }}
                       />

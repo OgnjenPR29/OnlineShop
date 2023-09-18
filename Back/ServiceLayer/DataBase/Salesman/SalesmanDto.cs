@@ -21,7 +21,7 @@ namespace ServiceLayer.DataBase
 
 		public string Address { get; set; }
 
-		public byte[] SellerProfileImage { get; set; }
+		public byte[] ProfileImage { get; set; }
 
 		public DateTime DateOfBirth { get; set; }
 

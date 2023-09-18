@@ -23,7 +23,7 @@ namespace ServiceLayer.DataBase.Auth
 
 		public string Role { get; set; }
 
-		public IFormFile ProfileImage { get; set; }
+		public IFormFile Image { get; set; }
 
 		public DateTime DateOfBirth { get; set; }
 	}

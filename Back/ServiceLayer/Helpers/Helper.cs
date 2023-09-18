@@ -23,6 +23,8 @@ namespace ServiceLayer.Helpers
 		string _key;
 
 		private readonly string ArticleImageRelativePath = "../ArticleImages";
+		private const string profileImageRelativePath = "../ProfileImages";
+
 
 		readonly int sslPort = 44301;
 
@@ -354,5 +356,85 @@ namespace ServiceLayer.Helpers
 				currentUser.DateOfBirth = newUser.DateOfBirth;
 			}
 		}
+
+		public byte[] GetProfileImage(string profileImageName)
+		{
+			if (profileImageName == null)
+			{
+				return null;
+			}
+
+			string path = Path.Combine(profileImageRelativePath, profileImageName);
+
+			if (!File.Exists(path))
+			{
+				return null;
+			}
+
+			byte[] image = File.ReadAllBytes(path);
+
+			return image;
+		}
+
+		public void UpdateProfileImagePath(IUser currentUser, string newUsername)
+		{
+			if (currentUser.Username == newUsername)
+			{
+				return;
+			}
+
+			string oldProfileImagePath = Path.Combine(Directory.GetCurrentDirectory(), profileImageRelativePath, currentUser.Image);
+
+			if (!File.Exists(oldProfileImagePath))
+			{
+				return;
+			}
+
+			string fileExtension = Path.GetExtension(currentUser.Image);
+			string profileImageFileName = newUsername + fileExtension;
+
+			string newProfileImagePath = Path.Combine(Directory.GetCurrentDirectory(), profileImageRelativePath, profileImageFileName);
+			File.Move(oldProfileImagePath, newProfileImagePath);
+
+			currentUser.Image = profileImageFileName;
+		}
+
+		public bool UploadProfileImage(IUser user, IFormFile profileImage)
+		{
+			if (user.Image != null)
+			{
+				string path = Path.Combine(profileImageRelativePath, user.Image);
+
+				if (File.Exists(path))
+				{
+					File.Delete(path);
+				}
+			}
+			if (profileImage == null)
+			{
+				return true;
+			}
+
+			string profileImageDir = Path.Combine(Directory.GetCurrentDirectory(), profileImageRelativePath);
+
+			if (!Directory.Exists(profileImageDir))
+			{
+				Directory.CreateDirectory(profileImageDir);
+			}
+
+			string fileExtension = Path.GetExtension(profileImage.FileName);
+			string profileImageFileName = Path.Combine(profileImageDir, user.Username) + fileExtension;
+
+			using (FileStream fs = new FileStream(profileImageFileName, FileMode.Create))
+			{
+				profileImage.CopyTo(fs);
+			}
+
+			user.Image = user.Username + fileExtension;
+
+			return true;
+		}
+
+
 	}
 }

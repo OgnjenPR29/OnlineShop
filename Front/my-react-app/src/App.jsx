@@ -2,6 +2,7 @@ import { Routes, Route, Router } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { Box } from '@mui/material';
 
+import './App.css';
 
 import UserContext from './context/UserContext';
 import OrderContext from './context/OrderContext';
@@ -34,7 +35,6 @@ function App() {
   const { loadUser, ...userContext } = useContext(UserContext);
   const { removeOrder, ...orderContext } = useContext(OrderContext);
 
-
   const isLoggedin = userContext.isLoggedin;
   
   const role = isLoggedin && userContext.role.toLowerCase();
@@ -56,7 +56,8 @@ function App() {
   console.log("usaoo")
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <div className='App'>
+    <Box sx={{width: '100%', height: '100%' }}>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -86,6 +87,7 @@ function App() {
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Box>
+    </div>
   );
 }
 

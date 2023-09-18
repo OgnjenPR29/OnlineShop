@@ -37,6 +37,9 @@ namespace ServiceLayer.Helpers
         public void AddProductImageIfExists(IArticle article, IFormFile receivedImage, long sellerId);
         public byte[] GetArticleProductImage(IArticle article);
         public void DeleteArticleProductImageIfExists(IArticle article);
+        public byte[] GetProfileImage(string profileImageName);
+        public void UpdateProfileImagePath(IUser currentUser, string newUsername);
+        public bool UploadProfileImage(IUser user, IFormFile profileImage);
 
 
 

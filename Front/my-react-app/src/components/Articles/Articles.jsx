@@ -95,6 +95,7 @@ const Articles = ({ data, hasButton, buttonCallback, buttonText }) => {
                           onClick={(e) => {
                             buttonCallback(row);
                           }}
+                          style={{ display: row.quantity == 0 && buttonText == 'Add to order' ? 'none' : 'flex' }} 
                         >
                           {buttonText}
                         </Button>
